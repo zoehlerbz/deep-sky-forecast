@@ -1,0 +1,6 @@
+venv/
+.vscode/
+Draw.io/
+__pycache__/
+passo-a-passo.md
+.env
