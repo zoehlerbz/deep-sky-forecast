@@ -20,6 +20,7 @@ class DatabaseLocation:
         self.location_name = location[1]
         self.location_lat = location[2]
         self.location_lon = location[3]
+        self.location_timezone = location[4]
 
     def engine(self):
         engine = create_engine(
