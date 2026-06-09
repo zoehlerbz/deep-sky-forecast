@@ -1,15 +1,9 @@
 import streamlit as st
+from datetime import datetime, timedelta
 
-from src.database.get_location import DatabaseLocation
 from src.pipeline.data_extraction import DataExtraction
 
-location = DatabaseLocation()
-
-pipeline_data_extraction = DataExtraction(
-    latitude=location.location_lat,
-    longitude=location.location_lon,
-    timezone=location.location_timezone
-)
+pipeline_data_extraction = DataExtraction()
 
 daily_data, hourly_data = pipeline_data_extraction.run()
 
@@ -18,19 +12,48 @@ daily_data, hourly_data = pipeline_data_extraction.run()
 #     APP     #
 ###############
 
-st.title("Teste app!")
-st.header("Testando Streamlit.")
-st.text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
-
-st.text(f"ID: {location.location_id}")
-st.text(f"Localização: {location.location_name}")
-st.text(f"Latitude: {location.location_lat}")
-st.text(f"Longitude: {location.location_lon}")
-st.text(f"Timezone: {location.location_timezone}")
+st.text(f"Localização: {pipeline_data_extraction.location} ({pipeline_data_extraction.latitude}, {pipeline_data_extraction.longitude})")
 st.text(f"Última atualização: {pipeline_data_extraction.date_now}")
 
-st.text("Daily data")
-st.dataframe(daily_data)
+day_0 = datetime.today()
+day_1 = day_0 + timedelta(days=1)
+day_2 = day_0 + timedelta(days=2)
+day_3 = day_0 + timedelta(days=3)
 
-st.text("Hourly data")
-st.dataframe(hourly_data)
+tab1, tab2, tab3, tab4 = st.tabs(
+    [day_0.strftime("%Y-%m-%d"), day_1.strftime("%Y-%m-%d"), day_2.strftime("%Y-%m-%d"), day_3.strftime("%Y-%m-%d")]
+)
+
+with tab1:
+    data1 = hourly_data[hourly_data['datetime'].dt.strftime("%Y-%m-%d") == day_0.strftime("%Y-%m-%d")]
+    
+    st.write(f"Dia {day_0.strftime("%Y-%m-%d")}")
+    st.dataframe(data1)
+
+with tab2:
+    data2 = hourly_data[hourly_data['datetime'].dt.strftime("%Y-%m-%d") == day_1.strftime("%Y-%m-%d")]
+    
+    st.write(f"Dia {day_1.strftime("%Y-%m-%d")}")
+    st.dataframe(data2)
+
+with tab3:
+    data3 = hourly_data[hourly_data['datetime'].dt.strftime("%Y-%m-%d") == day_2.strftime("%Y-%m-%d")]
+    
+    st.write(f"Dia {day_2.strftime("%Y-%m-%d")}")
+    st.dataframe(data3)
+
+with tab4:
+    data4 = hourly_data[hourly_data['datetime'].dt.strftime("%Y-%m-%d") == day_3.strftime("%Y-%m-%d")]
+    
+    st.write(f"Dia {day_3.strftime("%Y-%m-%d")}")
+    st.dataframe(data4)
+
+
+
+
+
+#st.text("Daily data")
+#st.dataframe(daily_data)
+
+#st.text("Hourly data")
+#st.dataframe(hourly_data)

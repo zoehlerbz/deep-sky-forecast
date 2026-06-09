@@ -7,13 +7,20 @@ from src.extract.get_climate_hourly_data import ClimateHourly
 from src.extract.get_moon_hourly_data import MoonHourly
 from src.extract.get_moon_daily_data import MoonDaily
 
+from src.database.get_location import DatabaseLocation
+
 class DataExtraction:
 
-    def __init__(self, latitude, longitude, timezone) -> None:
+    def __init__(self) -> None:
 
-        self.latitude = latitude
-        self.longitude = longitude
-        self.date_now = datetime.now(ZoneInfo(timezone))
+        location = DatabaseLocation()
+
+        self.id = location.location_id
+        self.location = location.location_name
+        self.latitude = location.location_lat
+        self.longitude = location.location_lon
+        self.timezone = location.location_timezone
+        self.date_now = datetime.now(ZoneInfo(self.timezone))
 
     def run(self):
 
