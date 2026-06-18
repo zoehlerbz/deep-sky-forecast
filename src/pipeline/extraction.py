@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 
 from datetime import datetime, timedelta
@@ -22,7 +23,21 @@ class DataExtraction:
         self.timezone = location.location_timezone
         self.date_now = datetime.now(ZoneInfo(self.timezone))
 
-    def run(self):
+    def get_hourly_data(self):
+
+        date_now = self._standardize_date_now()
+        hourly_data = self._hourly_data(date_now=date_now)
+
+        return hourly_data
+
+    def get_daily_data(self):
+        
+        date_now = self._standardize_date_now()
+        daily_data = self._daily_data(date_now=date_now)
+
+        return daily_data
+
+    def _standardize_date_now(self):
 
         date_now = self.date_now.replace(
                             hour=0,
@@ -31,15 +46,9 @@ class DataExtraction:
                             microsecond=0
                         )
 
-        # Moon daily data
-        daily_data = self.get_daily_data(date_now=date_now)
+        return date_now
 
-        # Moon + climate hourly data
-        hourly_data = self.get_hourly_data(date_now=date_now)
-
-        return daily_data, hourly_data
-
-    def get_hourly_data(self, date_now):  # moon + climate
+    def _hourly_data(self, date_now):  # moon + climate
         climate_hourly = ClimateHourly(
             latitude=self.latitude,
             longitude=self.longitude
@@ -57,7 +66,7 @@ class DataExtraction:
 
         return full_hourly_data
 
-    def get_daily_data(self, date_now):  # moon
+    def _daily_data(self, date_now):  # moon
         moon_daily = MoonDaily(
             latitude=self.latitude,
             longitude=self.longitude,

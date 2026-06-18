@@ -6,3 +6,4 @@ passo-a-passo.md
 .env
 postgresql_query.txt
 .cache.sqlite
+logs

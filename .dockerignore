@@ -3,5 +3,6 @@ venv/
 Draw.io/
 __pycache__/
 .git/
+logs/
 passo-a-passo.md
 postgresql_query.txt

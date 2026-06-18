@@ -1,14 +1,7 @@
 import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
-
-load_dotenv()
-
-POSTGRES_USER = os.getenv('POSTGRES_USER')
-POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
-POSTGRES_HOST = os.getenv('POSTGRES_HOST')
-POSTGRES_PORT = os.getenv('POSTGRES_PORT')
-POSTGRES_DB = os.getenv('POSTGRES_DB')
+from src.settings.config import user, password, host, port, database
 
 class DatabaseLocation:
 
@@ -24,7 +17,7 @@ class DatabaseLocation:
 
     def engine(self):
         engine = create_engine(
-            f"postgresql+psycopg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+            f"postgresql+psycopg://{user}:{password}@{host}:{port}/{database}"
         )
 
         return engine
